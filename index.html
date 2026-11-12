@@ -55,7 +55,7 @@
       <li v-for="producto in productosFiltrados"
           :key="producto.id" class="tarjeta">
         <h2>{{ producto.nombre }}</h2>
-        <p>{{ producto.categoria }}</p>
+        <p class="categoria-producto">{{ producto.categoria }}</p>
         <p class="precio">{{ formatearPrecio(producto.precio) }} MXN</p>
         <p v-if="producto.stock > 0">Disponibles: {{ producto.stock }}</p>
         <p v-else class="agotado">Agotado</p>
