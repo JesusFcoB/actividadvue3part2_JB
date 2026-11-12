@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catálogo de tecnología</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <main id="app" class="contenedor" v-cloak>
+    <header class="encabezado">
+      <h1>Catálogo de tecnología - Hecho por Jesús Francisco Barreras Samaniego</h1>
+      <button class="boton-tema" type="button" @click="alternarTema"
+              :aria-pressed="modoOscuro">
+        {{ modoOscuro ? 'Usar modo claro' : 'Usar modo oscuro' }}
+      </button>
+    </header>
+
+    <section class="filtros" aria-label="Filtros del catálogo">
+      <div>
+        <label for="busqueda">Buscar por nombre</label>
+        <input id="busqueda" type="search" v-model="busqueda"
+               placeholder="Ejemplo: teclado">
+      </div>
+      <div>
+        <label for="categoria">Categoría</label>
+        <select id="categoria" v-model="categoria">
+          <option value="">Todas</option>
+          <option v-for="opcion in categorias" :key="opcion" :value="opcion">
+            {{ opcion }}
+          </option>
+        </select>
+      </div>
+      <div class="control-checkbox">
+        <input id="soloDisponibles" type="checkbox" v-model="soloDisponibles">
+        <label for="soloDisponibles">Solo disponibles</label>
+      </div>
+      <div>
+        <label for="ordenPrecio">Ordenar por precio</label>
+        <select id="ordenPrecio" v-model="ordenPrecio">
+          <option value="original">Orden original</option>
+          <option value="ascendente">Precio: menor a mayor</option>
+          <option value="descendente">Precio: mayor a menor</option>
+        </select>
+      </div>
+      <button type="button" @click="limpiarFiltros">Limpiar filtros</button>
+    </section>
+
+    <p role="status">Resultados: {{ productosFiltrados.length }}</p>
+    <p v-if="productosFiltrados.length === 0">
+      No se encontraron productos. Cambia o limpia los filtros.
+    </p>
+
+    <ul v-else class="catalogo">
+      <li v-for="producto in productosFiltrados"
+          :key="producto.id" class="tarjeta">
+        <h2>{{ producto.nombre }}</h2>
+        <p>{{ producto.categoria }}</p>
+        <p class="precio">{{ formatearPrecio(producto.precio) }} MXN</p>
+        <p v-if="producto.stock > 0">Disponibles: {{ producto.stock }}</p>
+        <p v-else class="agotado">Agotado</p>
+      </li>
+    </ul>
+  </main>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
